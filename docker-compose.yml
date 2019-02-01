@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+ api:
+   build: .
+   environment:
+     - HTTP_PROXY
+     - max.records.allowed='500'
+     - alert.last.days='30'
+     - alert.rank.thermal.hours='72'
+     - serviceTag.max.list='50'
+     - allowed.roles='SATC,LIGHTNING,GUIDEDRESOLUTION'
+     - db.driver='org.h2.Driver'
+     - genzdb.url="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM \'classpath:create.sql\';RUNSCRIPT FROM \'classpath:data.sql\'"
+     - genzdb.username='sa'
+     - genzdb.password='sa'
+   volumes:
+     - ./:/usr/app
+   working_dir: /usr/app
+   command: ['./mvnw', '-X' ,'clean','test']
